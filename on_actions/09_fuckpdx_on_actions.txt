@@ -1,0 +1,481 @@
+on_actions = {
+	on_weekly = {
+		effect = {
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = navy_cap
+						option = ENABLED
+					}
+					GER = {has_war = no }
+					USA = {has_war = no }
+					ENG = {has_war = no }
+					
+				}
+				HMP_check_fleet_size = yes 
+			}
+		}
+		effect = {
+			if = {
+				limit = {
+					any_other_country = {
+						has_volunteers_amount_from = {
+							tag = ROOT
+							count > 0
+						}
+						ROOT = {
+							not = {
+								has_military_access_to = PREV
+							}
+						}
+					}
+				}
+				every_other_country = {
+					limit = {
+						has_volunteers_amount_from = {
+							tag = ROOT
+							count > 0
+						}
+						ROOT = {
+							not = {
+								has_military_access_to = PREV
+							}
+						}
+					}
+					give_military_access = ROOT
+				}
+			}
+		}
+	}
+	on_daily = {
+		effect = {
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = navy_cap
+						option = ENABLED
+					}
+					OR = {
+						GER = {has_war = yes }
+						USA = {has_war = yes }
+						ENG = {has_war = yes }
+					}
+				}
+				HMP_check_fleet_size = yes 
+			}
+		}
+	}
+   on_startup = {
+		effect = {
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = assault_gun
+						option = ASSAULT_GUN_SUPPORT
+					}
+				}
+				every_country = {
+					hidden_effect = {
+						set_technology = { 
+							assault_gun_support_company = 1 
+							popup = no
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					has_game_rule = {
+						rule = assault_gun
+						option = ASSAULT_GUN_LINE
+					}
+				}
+				every_country = {
+					hidden_effect = {
+						set_technology = { 
+							assault_gun_line_unit = 1 
+							popup = no
+						}
+					}
+				}
+			}
+		}
+		effect = {
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = navy_cap
+						option = ENABLED
+					}
+				}
+				SWE = { HMP_startup_on_actions = yes }
+			}
+		}
+		effect = {
+			# every_country = { 
+			# 	limit = { tag = GER }
+			# 	country_event = { 
+			# 		id = germany.mefoair 
+			# 	}
+			# }
+			# every_country = { 
+			# 	limit = { tag = MON }
+			# 	country_event = { 
+			# 		id = mongolia.start 
+			# 	}
+			# }	
+			# every_country = { 
+			# 	limit = { tag = ITA }
+			# 	country_event = { 
+			# 		id = italy.air 
+			# 	}
+			# }	
+			if = {
+				limit = {
+					is_historical_focus_on = no
+				}
+				every_country = { 
+					country_event = { 
+						id = startingevent.999
+					}
+				}	
+			}
+			if = {
+				limit = {
+					OR = {
+						VEN = { is_ai = no}
+						POR = { is_ai = no}
+						BEL = { is_ai = no}
+						LUX = { is_ai = no}
+						SWI = { is_ai = no}
+						AUS = { is_ai = no}
+						CZE = { is_ai = no}
+						SWE = { is_ai = no}
+						DEN = { is_ai = no}
+						NOR = { is_ai = no}
+						YUG = { is_ai = no}
+						GRE = { is_ai = no}
+						LIT = { is_ai = no}
+						LAT = { is_ai = no}
+						EST = { is_ai = no}
+						CHI = { is_ai = no}
+						INS = { is_ai = no}						
+						PHI = { is_ai = no}
+						MAL = { is_ai = no}
+						TUR = { is_ai = no}						
+						IRQ = { is_ai = no}
+						PER = { is_ai = no}
+					}
+				}
+				every_country = { 
+					country_event = { 
+						id = startingevent.1000
+					}
+				}
+			}
+			every_country = { 
+				country_event = { 
+					id = startingevent.1001
+				}
+			}
+			every_country = { 
+				limit = { 
+					OR = {
+						tag = GER
+						tag = ITA
+						tag = USA
+						tag = ENG
+						tag = JAP
+						tag = FRA
+						tag = SOV
+					}
+				}
+				country_event = { 
+					id = startingevent.29
+				}
+			}	
+		}
+	}
+
+	on_capitulation = {
+		## Capitulation of China
+		# Going to the Peace Conference
+		effect = {
+			if = {
+				limit = {
+					original_tag = CHI
+					FROM = { tag = JAP }
+					AND = {
+						NOT = { has_global_flag = JAP_split_china}
+						NOT = { has_global_flag = JAP_take_china}
+						NOT = { has_global_flag = JAP_give_china}
+						NOT = { has_global_flag = JAP_puppet_china}
+					}
+					
+				}
+				if = {
+					limit = {
+						MAN = { has_completed_focus = MAN_crush_the_bandits }
+					}
+					MAN = {
+						add_ideas = MAN_assert_mills
+					}
+				}
+			}
+		}
+		# Japan and Manchu split China
+		effect = {
+			if = {
+				limit = {
+					original_tag = CHI
+					FROM = { tag = JAP }
+					has_global_flag = JAP_split_china
+				}
+				# JAP = {
+				# 	white_peace = CHI
+				# }
+				MAN = {
+					transfer_state = 604 #Qinghai
+					transfer_state = 608 #Beijing
+					transfer_state = 616 #Ningxia
+					transfer_state = 621 #Suiyuan
+					transfer_state = 746 #Ordos
+					transfer_state = 755 #Haixi
+					transfer_state = 756 #Jinquan
+				}
+				if = {
+					limit = {
+						MAN = { has_completed_focus = MAN_crush_the_bandits }
+					}
+					MAN = {
+						add_ideas = MAN_assert_mills
+					}
+				}
+				JAP = {
+					annex_country = {
+						target = CHI
+						transfer_troops = no
+					}
+					add_named_threat = {
+						threat = 30
+						name = JAP_threat_treaty_of_nanjing
+					}
+				}
+			}
+		}
+		# Japan Takes all of China
+		effect = {
+			if = {
+				limit = {
+					original_tag = CHI
+					FROM = { tag = JAP }
+					has_global_flag = JAP_take_china
+				}
+				JAP = {
+					# white_peace = CHI
+					annex_country = {
+						target = CHI
+						transfer_troops = no
+					}
+					add_named_threat = {
+						threat = 30
+						name = JAP_threat_treaty_of_nanjing
+					}
+				}
+				if = {
+					limit = {
+						MAN = { has_completed_focus = MAN_crush_the_bandits }
+					}
+					MAN = {
+						add_ideas = MAN_assert_mills
+					}
+				}
+			}
+		}
+		# Manchu takes all of China
+		effect = {
+			if = {
+				limit = {
+					original_tag = CHI
+					FROM = { tag = JAP }
+					has_global_flag = JAP_give_china
+				}
+				MAN = {
+					# white_peace = CHI
+					annex_country = {
+						target = CHI
+						transfer_troops = no
+					}
+				}
+				if = {
+					limit = {
+						MAN = { has_completed_focus = MAN_crush_the_bandits }
+					}
+					MAN = {
+						add_ideas = MAN_assert_mills
+					}
+				}
+				JAP = {
+					add_named_threat = {
+						threat = 30
+						name = JAP_threat_treaty_of_nanjing
+					}
+				}
+			}
+		}
+		# Japan Puppets China
+		effect = { 
+			if = {
+				limit = {
+					original_tag = CHI
+					FROM = { tag = JAP }
+					has_global_flag = JAP_puppet_china
+				}
+				JAP = {
+					puppet = CHI
+					add_named_threat = {
+						threat = 30
+						name = JAP_threat_treaty_of_nanjing
+					}
+				}
+				if = {
+					limit = {
+						MAN = { has_completed_focus = MAN_crush_the_bandits }
+					}
+					MAN = {
+						add_ideas = MAN_assert_mills
+					}
+				}
+			}
+		}
+
+		# Italy takes Ethopia
+		effect = { 
+			if = {
+				limit = {
+					original_tag = ETH
+					FROM = { tag = ITA }
+				}
+				ITA = {
+					annex_country = {
+						target = ETH
+						transfer_troops = no
+					}
+					add_named_threat = { threat = -0.3 name = ITA_treaty_of_addis }
+					271 = { set_compliance = 60 }
+					271 = { add_dynamic_modifier = { modifier = ITA_ethiopia_local_supply } }
+					550 = { add_dynamic_modifier = { modifier = ITA_ethiopia_local_supply } }
+					559 = { add_dynamic_modifier = { modifier = ITA_ethiopia_local_supply } }
+					add_equipment_to_stockpile = {
+						type = infantry_equipment_0
+						amount = 20000
+						producer = ITA
+					}
+					add_equipment_to_stockpile = {
+						type = squad_equipment_0
+						amount = 5000
+						producer = ITA
+					}
+					add_equipment_to_stockpile = {
+						type = horse_equipment_0
+						amount = 5000
+						producer = ITA
+					}
+					create_corps_commander = {
+						name = "Fresh Prince Amedeo"
+						picture = "Portrait_Duke_of_Aosta.dds"
+						traits = { politically_connected }
+						skill = 2
+						attack_skill = 2
+						defense_skill = 3
+						planning_skill = 1
+						logistics_skill = 2
+					}
+					add_victory_points = {
+						province = 5010
+						value = 25
+					}
+					add_victory_points = {
+						province = 7980
+						value = 14
+					}
+					add_victory_points = {
+						province = 1984
+						value = 14
+					}
+					add_victory_points = {
+						province = 12766
+						value = 15
+					}
+					add_victory_points = {
+						province = 12991
+						value = 15
+					}
+				}
+			}
+		}
+
+		# Spain takes Portugal
+		effect = { 
+			if = {
+				limit = {
+					original_tag = POR
+					FROM = { original_tag = SPA }
+					SPA = { NOT = { has_war_with = ENG } }
+				}
+				SPA = {
+					annex_country = {
+						target = POR
+						transfer_troops = no
+					}
+					add_named_threat = { threat = 5.6 name = SPA_treaty_of_lisbon }
+				}
+			}
+		}
+
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = { state = 110 }
+				}
+				FROM.FROM = {
+                    if = {
+						limit = {
+							CONTROLLER = {
+								OR = {
+									tag = ENG
+									is_subject_of = ENG
+									is_in_faction_with = ENG
+									tag = SOV
+									is_subject_of = SOV
+									is_in_faction_with = SOV
+								}
+							}
+						}
+						GER = {
+							set_country_flag = GER_start_sweden_allied_embargo_allies_mission
+						}
+					}
+                }
+
+			}
+		}
+
+		# Poland Loses Agency Debuff
+		effect = { 
+			if = {
+				limit = {
+					original_tag = POL
+					OR = {
+						FROM = { original_tag = GER }
+						FROM = { original_tag = ROM }
+						FROM = { original_tag = HUN }
+						FROM = { original_tag = BUL }
+						FROM = { original_tag = YUG }
+						FROM = { original_tag = SOV }
+					}
+				}
+				POL = { remove_ideas = POL_no_agency }
+			}
+		}
+	}
+}
